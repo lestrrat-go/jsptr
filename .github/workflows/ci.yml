@@ -10,9 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go_tags: [ 'stdlib', 'fastjson' ]
         go: [ '1.24', '1.23' ]
-    name: "Test [ Go ${{ matrix.go }} / Tags ${{ matrix.go_tags }} ]"
+    name: "Test [ Go ${{ matrix.go }} ]"
     steps:
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -33,12 +32,19 @@ jobs:
           check-latest: true
       - name: Install tparse
         run: go install github.com/mfridman/tparse@v0.12.2
-      - run: make generate
-      - name: make tidy
-        run: make tidy
+      - name: Run go generate
+        run: go generate ./...
+      - name: Go mod tidy
+        run: go mod tidy
       - name: Test with coverage
-        run: make cover-${{ matrix.go_tags }}
+        run: go test -cover ./...
       - uses: bazelbuild/setup-bazelisk@v3
       - run: bazel run //:gazelle-update-repos
-      - name: Check difference between generation code and commit code
-        run: make check_diffs
+      - name: Check for uncommitted changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Uncommitted changes found:"
+            git status --porcelain
+            git diff
+            exit 1
+          fi

@@ -1,18 +1,12 @@
-load("@rules_go//go:def.bzl", "go_library", "go_test")
 load("@gazelle//:def.bzl", "gazelle")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 # gazelle:prefix github.com/lestrrat-go/jsptr
 gazelle(name = "gazelle")
 
-gazelle(
-    name = "gazelle-update-repos",
-    args = [
-        "-from_file=go.mod",
-        "-to_macro=MODULE.bazel%go_deps",
-        "-prune",
-    ],
-    command = "update-repos",
-)
+# Note: gazelle-update-repos is not needed with MODULE.bazel
+# Dependencies are automatically managed by go_deps extension
+# Use 'bazel mod tidy' to update MODULE.bazel dependencies instead
 
 go_library(
     name = "jsptr",
@@ -27,8 +21,14 @@ go_library(
 
 go_test(
     name = "jsptr_test",
-    srcs = ["jsptr_test.go"],
     size = "small",
-    embed = [":jsptr"],
-    deps = ["@com_github_stretchr_testify//require"],
+    srcs = [
+        "jsptr_example_test.go",
+        "jsptr_test.go",
+    ],
+    deps = [
+        ":jsptr",
+        "@com_github_lestrrat_go_blackmagic//:blackmagic",
+        "@com_github_stretchr_testify//require",
+    ],
 )

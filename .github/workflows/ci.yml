@@ -39,7 +39,8 @@ jobs:
       - name: Test with coverage
         run: go test -cover ./...
       - uses: bazelbuild/setup-bazelisk@v3
-      - run: bazel run //:gazelle-update-repos
+      - name: Update MODULE.bazel dependencies
+        run: bazel mod tidy
       - name: Check for uncommitted changes
         run: |
           if [ -n "$(git status --porcelain)" ]; then

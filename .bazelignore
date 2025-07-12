@@ -4,8 +4,6 @@ go.sum
 # Ignore IDE files
 .vscode/
 .idea/
-*.swp
-*.swo
 
 # Ignore temporary files
 .tmp/
@@ -24,4 +22,3 @@ docs/_build/
 
 # Ignore test coverage files
 coverage.out
-*.prof

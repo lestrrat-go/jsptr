@@ -1,0 +1,23 @@
+# Build configuration
+build --incompatible_enable_cc_toolchain_resolution
+build --copt=-Wno-sign-compare
+
+# Enable Bzlmod for MODULE.bazel
+common --enable_bzlmod
+
+# Test configuration
+test --test_output=errors
+test --test_verbose_timeout_warnings
+
+# Performance optimizations
+build --jobs=auto
+
+# Go specific settings  
+# Note: pure mode config moved to MODULE.bazel in Bzlmod
+
+# Remote cache settings (if using remote cache)
+# build --remote_cache=...
+
+# Misc settings
+build --symlink_prefix=bazel-
+startup --host_jvm_args=-Xmx2g

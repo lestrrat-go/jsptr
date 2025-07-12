@@ -1,0 +1,27 @@
+# Ignore Go build outputs
+go.sum
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore temporary files
+.tmp/
+tmp/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore Git files
+.git/
+.gitignore
+
+# Ignore documentation build outputs
+docs/_build/
+
+# Ignore test coverage files
+coverage.out
+*.prof
